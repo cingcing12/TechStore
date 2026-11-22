@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ArrowRight, ShieldCheck, Cpu, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 
 const SLIDES = [
   {
@@ -99,11 +99,6 @@ export default function HeroSlider({ onSelectProduct }) {
         {/* Content Overlay */}
         <div className="relative z-20 h-full flex flex-col justify-between p-6 sm:p-10 lg:p-12 max-w-2xl text-white">
           <div className="space-y-3">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-neutral-200 text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-              <span>{slide.tag}</span>
-            </div>
-
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
               {slide.title}
             </h2>
