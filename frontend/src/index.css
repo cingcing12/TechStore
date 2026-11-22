@@ -30,7 +30,17 @@
   animation: shimmer 1.6s ease-in-out infinite;
 }
 
-/* Custom scrollbars */
+/* Print styles */
+@media print {
+  @page {
+    margin: 15mm;
+    size: A4 portrait;
+  }
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+}
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
