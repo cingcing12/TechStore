@@ -47,10 +47,11 @@ export default function App() {
 
   const addToast = (message, type = 'success') => {
     const id = Date.now() + Math.random();
-    setToasts(prev => [...prev, { id, message, type }]);
+    // Keep at most 2 active toasts to prevent alert stacking
+    setToasts(prev => [...prev.slice(-1), { id, message, type }]);
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id));
-    }, 3200);
+    }, 2800);
   };
 
   const dismissToast = (id) => {
@@ -63,22 +64,26 @@ export default function App() {
   const discountAmount = appliedPromo ? (cartSubtotal * appliedPromo.discountPercent) / 100 : 0;
   const cartTotal = Math.max(0, cartSubtotal - discountAmount);
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (product, quantityToAdd = 1) => {
+    const qty = Math.max(1, Number(quantityToAdd) || 1);
+
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
       if (existing) {
         return prev.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id ? { ...item, quantity: item.quantity + qty } : item
         );
       } else {
-        return [...prev, { ...product, quantity: 1 }];
+        return [...prev, { ...product, quantity: qty }];
       }
     });
 
     setRecentlyAddedId(product.id);
     setTimeout(() => setRecentlyAddedId(null), 1200);
 
-    addToast(`Added "${product.shortName || product.name}" to cart`, 'success');
+    const label = product.shortName || product.name;
+    const msg = qty > 1 ? `Added ${qty} × "${label}" to cart` : `Added "${label}" to cart`;
+    addToast(msg, 'success');
   };
 
   const handleUpdateQty = (productId, newQty) => {

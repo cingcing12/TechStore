@@ -8,9 +8,7 @@ export default function ProductQuickViewModal({ product, isOpen, onClose, onAddT
   if (!isOpen || !product) return null;
 
   const handleAdd = () => {
-    for (let i = 0; i < quantity; i++) {
-      onAddToCart(product);
-    }
+    onAddToCart(product, quantity);
     setJustAdded(true);
     setTimeout(() => {
       setJustAdded(false);
