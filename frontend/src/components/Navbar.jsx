@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, ChevronRight, Sparkles } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 
 export default function Navbar({
   currentView,
@@ -58,35 +58,6 @@ export default function Navbar({
                 )}
               </button>
             </nav>
-          </div>
-
-          {/* Stepper Breadcrumb (Desktop) */}
-          <div className="hidden lg:flex items-center text-xs font-medium text-neutral-400 bg-neutral-50 px-3 py-1.5 rounded-full border border-neutral-200/70">
-            <button
-              onClick={() => setCurrentView('products')}
-              className={`hover:text-neutral-900 transition-colors cursor-pointer ${
-                currentView === 'products' ? 'text-neutral-950 font-bold' : ''
-              }`}
-            >
-              1. Catalog
-            </button>
-            <ChevronRight className="w-3.5 h-3.5 mx-1.5 text-neutral-300" />
-            <button
-              onClick={() => setCurrentView('cart')}
-              className={`hover:text-neutral-900 transition-colors cursor-pointer ${
-                currentView === 'cart' ? 'text-neutral-950 font-bold' : ''
-              }`}
-            >
-              2. Cart ({cartCount})
-            </button>
-            <ChevronRight className="w-3.5 h-3.5 mx-1.5 text-neutral-300" />
-            <span className={currentView === 'checkout' ? 'text-neutral-950 font-bold' : ''}>
-              3. Checkout
-            </span>
-            <ChevronRight className="w-3.5 h-3.5 mx-1.5 text-neutral-300" />
-            <span className={currentView === 'confirmation' ? 'text-neutral-950 font-bold' : ''}>
-              4. Confirmation
-            </span>
           </div>
 
           {/* Cart Trigger */}
