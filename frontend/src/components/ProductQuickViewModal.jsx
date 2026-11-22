@@ -30,12 +30,12 @@ export default function ProductQuickViewModal({ product, isOpen, onClose, onAddT
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2">
-          {/* Product Image */}
-          <div className="relative aspect-square md:aspect-auto bg-neutral-100/70 p-6 flex items-center justify-center overflow-hidden">
+          {/* Product Image - Edge-to-Edge Full Height */}
+          <div className="relative h-64 sm:h-80 md:h-auto min-h-[360px] md:min-h-full w-full bg-neutral-100 overflow-hidden">
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-full object-cover object-center rounded-2xl shadow-2xs"
+              className="w-full h-full object-cover object-center"
             />
           </div>
 
