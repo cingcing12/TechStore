@@ -52,7 +52,7 @@ export default function Navbar({
               >
                 <span>Cart</span>
                 {cartCount > 0 && (
-                  <span className="w-4.5 h-4.5 rounded-full bg-neutral-900 text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="min-w-[20px] h-5 px-1.5 rounded-full bg-neutral-900 text-white text-[10px] font-bold inline-flex items-center justify-center leading-none">
                     {cartCount}
                   </span>
                 )}
@@ -69,7 +69,7 @@ export default function Navbar({
               <div className="relative">
                 <ShoppingBag className="w-4.5 h-4.5" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-2 w-4 h-4 bg-blue-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-blue-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none shadow-xs">
                     {cartCount}
                   </span>
                 )}
