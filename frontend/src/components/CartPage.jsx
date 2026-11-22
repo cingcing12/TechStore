@@ -131,8 +131,9 @@ export default function CartPage({
                   <div className="flex items-center border border-neutral-200 rounded-xl bg-white p-0.5">
                     <button
                       onClick={() => onUpdateQty(item.id, item.quantity - 1)}
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors cursor-pointer"
-                      title="Decrease quantity"
+                      disabled={item.quantity <= 1}
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-neutral-500"
+                      title={item.quantity <= 1 ? "Minimum quantity is 1" : "Decrease quantity"}
                     >
                       <Minus className="w-3.5 h-3.5" />
                     </button>

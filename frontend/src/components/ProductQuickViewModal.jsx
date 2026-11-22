@@ -98,7 +98,9 @@ export default function ProductQuickViewModal({ product, isOpen, onClose, onAddT
                 <div className="flex items-center border border-neutral-200 rounded-xl p-0.5 bg-neutral-50">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-500 hover:bg-white hover:text-neutral-900 font-bold transition-colors cursor-pointer"
+                    disabled={quantity <= 1}
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-500 hover:bg-white hover:text-neutral-900 font-bold transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-neutral-500"
+                    title={quantity <= 1 ? "Minimum quantity is 1" : "Decrease quantity"}
                   >
                     -
                   </button>

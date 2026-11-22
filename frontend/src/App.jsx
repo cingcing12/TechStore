@@ -87,10 +87,8 @@ export default function App() {
   };
 
   const handleUpdateQty = (productId, newQty) => {
-    if (newQty <= 0) {
-      handleRemoveItem(productId);
-      return;
-    }
+    // When qty = 1, can't decrease below 1 (use remove button/trash to delete)
+    if (newQty < 1) return;
 
     setCart(prev =>
       prev.map(item =>
