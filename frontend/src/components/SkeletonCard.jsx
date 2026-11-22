@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function SkeletonCard() {
   return (
-    <div className="bg-white rounded-2xl border border-neutral-200/70 p-4 flex flex-col space-y-4 overflow-hidden shadow-2xs">
+    <div className="bg-white rounded-2xl border border-neutral-200/70 p-3 sm:p-4 flex flex-col space-y-3 sm:space-y-4 overflow-hidden shadow-2xs">
       {/* Image Skeleton */}
       <div className="aspect-4/3 w-full rounded-xl skeleton-shimmer"></div>
 

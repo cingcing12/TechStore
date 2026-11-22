@@ -137,9 +137,9 @@ export default function ProductList({
           </div>
         </div>
 
-        {/* Product Grid / Skeleton State */}
+        {/* Product Grid / Skeleton State - 2 Columns on Mobile, 4 Columns on Desktop */}
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {[1, 2, 3, 4].map((n) => (
               <SkeletonCard key={n} />
             ))}
@@ -155,7 +155,7 @@ export default function ProductList({
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {filteredProducts.map(product => (
               <ProductCard
                 key={product.id}

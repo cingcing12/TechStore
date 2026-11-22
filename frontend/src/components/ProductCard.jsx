@@ -42,38 +42,38 @@ export default function ProductCard({
       </div>
 
       {/* Clean Minimal Details */}
-      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
-        <div className="space-y-1.5">
+      <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between space-y-2.5 sm:space-y-4">
+        <div className="space-y-1 sm:space-y-1.5">
           {/* Rating */}
           <div className="flex items-center space-x-1">
-            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-            <span className="text-xs font-bold text-neutral-800">{product.rating}</span>
-            <span className="text-[11px] text-neutral-400">({product.reviewsCount})</span>
+            <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400" />
+            <span className="text-[11px] sm:text-xs font-bold text-neutral-800">{product.rating}</span>
+            <span className="text-[10px] sm:text-[11px] text-neutral-400">({product.reviewsCount})</span>
           </div>
 
           {/* Title */}
           <h3
             onClick={() => onQuickView(product)}
-            className="text-sm sm:text-base font-bold text-neutral-900 group-hover:text-blue-600 transition-colors line-clamp-1 cursor-pointer"
+            className="text-xs sm:text-base font-bold text-neutral-900 group-hover:text-blue-600 transition-colors line-clamp-1 cursor-pointer"
             title={product.name}
           >
             {product.name}
           </h3>
 
           {/* One Clean Spec Line */}
-          <p className="text-xs text-neutral-500 line-clamp-1">
+          <p className="text-[10px] sm:text-xs text-neutral-500 line-clamp-1">
             {Object.values(product.specs).slice(0, 3).join(' • ')}
           </p>
         </div>
 
         {/* Price & Action Button */}
-        <div className="pt-3 border-t border-neutral-100 flex items-center justify-between gap-3">
-          <div className="flex items-baseline space-x-1.5">
-            <span className="text-lg sm:text-xl font-black text-neutral-900">
+        <div className="pt-2 sm:pt-3 border-t border-neutral-100 flex flex-col xs:flex-row xs:items-center sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3">
+          <div className="flex items-baseline space-x-1 sm:space-x-1.5">
+            <span className="text-base sm:text-xl font-black text-neutral-900">
               ${product.price}
             </span>
             {product.originalPrice && (
-              <span className="text-xs text-neutral-400 line-through">
+              <span className="text-[10px] sm:text-xs text-neutral-400 line-through">
                 ${product.originalPrice}
               </span>
             )}
@@ -81,7 +81,7 @@ export default function ProductCard({
 
           <button
             onClick={() => onAddToCart(product)}
-            className={`px-3 py-2 rounded-xl font-bold text-xs flex items-center space-x-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer ${
+            className={`w-full xs:w-auto px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl font-bold text-[11px] sm:text-xs flex items-center justify-center space-x-1 sm:space-x-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer shrink-0 ${
               isAdded
                 ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                 : 'bg-neutral-900 text-white hover:bg-neutral-800'
@@ -89,12 +89,12 @@ export default function ProductCard({
           >
             {isAdded ? (
               <>
-                <Check className="w-3.5 h-3.5" />
+                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span>Added</span>
               </>
             ) : (
               <>
-                <ShoppingBag className="w-3.5 h-3.5" />
+                <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 <span>Add to Cart</span>
               </>
             )}
