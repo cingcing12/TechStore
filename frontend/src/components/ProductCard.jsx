@@ -8,10 +8,10 @@ export default function ProductCard({
   isAdded
 }) {
   return (
-    <div className="group bg-white rounded-2xl border border-neutral-200/80 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1">
-      {/* Product Image */}
+    <div className="group bg-white rounded-2xl border border-neutral-200/70 hover:border-neutral-300 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col overflow-hidden">
+      {/* Product Image Container */}
       <div
-        className="relative aspect-4/3 w-full bg-neutral-100 overflow-hidden cursor-pointer"
+        className="relative aspect-4/3 w-full bg-neutral-100/60 overflow-hidden cursor-pointer"
         onClick={() => onQuickView(product)}
       >
         <img
@@ -21,14 +21,9 @@ export default function ProductCard({
           loading="lazy"
         />
 
-        {/* Category & Badge */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
-          {product.badge && (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-neutral-900 text-white shadow-2xs">
-              {product.badge}
-            </span>
-          )}
-          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white/95 text-neutral-700 backdrop-blur-sm shadow-2xs border border-neutral-200/60">
+        {/* Single Minimal Category Tag */}
+        <div className="absolute top-3 left-3 z-10">
+          <span className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white/95 text-neutral-700 backdrop-blur-md shadow-2xs border border-neutral-200/50">
             {product.category}
           </span>
         </div>
@@ -39,30 +34,19 @@ export default function ProductCard({
             e.stopPropagation();
             onQuickView(product);
           }}
-          className="absolute bottom-3 right-3 p-2 rounded-xl bg-white/90 hover:bg-white text-neutral-700 hover:text-neutral-950 shadow-md backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0 cursor-pointer"
-          title="Quick View Details"
+          className="absolute bottom-3 right-3 p-2 rounded-xl bg-white/95 hover:bg-white text-neutral-700 hover:text-neutral-950 shadow-sm backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0 cursor-pointer"
+          title="Quick View"
         >
           <Eye className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Content */}
-      <div className="p-5 flex-1 flex flex-col justify-between">
-        <div>
+      {/* Clean Minimal Details */}
+      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
+        <div className="space-y-1.5">
           {/* Rating */}
-          <div className="flex items-center space-x-1.5 mb-1.5">
-            <div className="flex text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-3.5 h-3.5 ${
-                    i < Math.floor(product.rating)
-                      ? 'fill-amber-400 text-amber-400'
-                      : 'text-neutral-200'
-                  }`}
-                />
-              ))}
-            </div>
+          <div className="flex items-center space-x-1">
+            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
             <span className="text-xs font-bold text-neutral-800">{product.rating}</span>
             <span className="text-[11px] text-neutral-400">({product.reviewsCount})</span>
           </div>
@@ -76,44 +60,28 @@ export default function ProductCard({
             {product.name}
           </h3>
 
-          <p className="mt-1 text-xs text-neutral-500 line-clamp-2 leading-relaxed">
-            {product.description}
+          {/* One Clean Spec Line */}
+          <p className="text-xs text-neutral-500 line-clamp-1">
+            {Object.values(product.specs).slice(0, 3).join(' • ')}
           </p>
-
-          {/* Quick Specs */}
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {Object.values(product.specs).slice(0, 2).map((val, idx) => (
-              <span
-                key={idx}
-                className="text-[10px] px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600 font-medium"
-              >
-                {val}
-              </span>
-            ))}
-          </div>
         </div>
 
-        {/* Pricing & Add to Cart button */}
-        <div className="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-between gap-3">
-          <div>
-            <div className="text-[10px] text-neutral-400 uppercase font-semibold tracking-wider">
-              Price
-            </div>
-            <div className="flex items-baseline space-x-1.5">
-              <span className="text-xl sm:text-2xl font-black text-neutral-900">
-                ${product.price}
+        {/* Price & Action Button */}
+        <div className="pt-3 border-t border-neutral-100 flex items-center justify-between gap-3">
+          <div className="flex items-baseline space-x-1.5">
+            <span className="text-lg sm:text-xl font-black text-neutral-900">
+              ${product.price}
+            </span>
+            {product.originalPrice && (
+              <span className="text-xs text-neutral-400 line-through">
+                ${product.originalPrice}
               </span>
-              {product.originalPrice && (
-                <span className="text-xs text-neutral-400 line-through">
-                  ${product.originalPrice}
-                </span>
-              )}
-            </div>
+            )}
           </div>
 
           <button
             onClick={() => onAddToCart(product)}
-            className={`px-3.5 py-2.5 rounded-xl font-bold text-xs tracking-wide flex items-center space-x-1.5 transition-all shadow-xs active:scale-95 cursor-pointer ${
+            className={`px-3 py-2 rounded-xl font-bold text-xs flex items-center space-x-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer ${
               isAdded
                 ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                 : 'bg-neutral-900 text-white hover:bg-neutral-800'

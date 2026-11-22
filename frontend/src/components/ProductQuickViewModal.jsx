@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShoppingBag, Star, Check, ShieldCheck } from 'lucide-react';
+import { X, ShoppingBag, Star, Check, ShieldCheck, Zap } from 'lucide-react';
 
 export default function ProductQuickViewModal({ product, isOpen, onClose, onAddToCart }) {
   const [quantity, setQuantity] = useState(1);
@@ -19,93 +19,88 @@ export default function ProductQuickViewModal({ product, isOpen, onClose, onAddT
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-neutral-950/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-neutral-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-xl border border-neutral-200/80 overflow-hidden">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 hover:bg-white text-neutral-500 hover:text-neutral-900 shadow-sm backdrop-blur-md transition-colors cursor-pointer"
+          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 hover:bg-white text-neutral-400 hover:text-neutral-900 border border-neutral-200/50 shadow-2xs transition-colors cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Product Image */}
-          <div className="relative aspect-square md:aspect-auto bg-neutral-100 overflow-hidden">
+          <div className="relative aspect-square md:aspect-auto bg-neutral-100/70 p-6 flex items-center justify-center overflow-hidden">
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center rounded-2xl shadow-2xs"
             />
           </div>
 
-          {/* Product Details */}
+          {/* Details */}
           <div className="p-6 sm:p-7 flex flex-col justify-between space-y-5">
-            <div>
-              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block mb-1">
-                {product.category}
-              </span>
-              <h2 className="text-lg sm:text-xl font-black text-neutral-900 leading-tight">
-                {product.name}
-              </h2>
-
-              {/* Rating */}
-              <div className="flex items-center space-x-1.5 mt-2">
-                <div className="flex text-amber-400">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-3.5 h-3.5 ${
-                        i < Math.floor(product.rating)
-                          ? 'fill-amber-400 text-amber-400'
-                          : 'text-neutral-200'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-xs font-bold text-neutral-800">{product.rating}</span>
-                <span className="text-xs text-neutral-400">({product.reviewsCount} reviews)</span>
-              </div>
-
-              {/* Price */}
-              <div className="mt-3 flex items-baseline space-x-2">
-                <span className="text-2xl font-black text-neutral-900">
-                  ${product.price}
+            <div className="space-y-3">
+              <div>
+                <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">
+                  {product.category}
                 </span>
-                {product.originalPrice && (
-                  <span className="text-xs text-neutral-400 line-through">
-                    ${product.originalPrice}
-                  </span>
-                )}
+                <h2 className="text-lg sm:text-xl font-bold text-neutral-900 mt-0.5">
+                  {product.name}
+                </h2>
               </div>
 
-              <p className="mt-2 text-xs text-neutral-600 leading-relaxed">
+              {/* Price & Rating Row */}
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
+                <div className="flex items-baseline space-x-2">
+                  <span className="text-2xl font-black text-neutral-900">
+                    ${product.price}
+                  </span>
+                  {product.originalPrice && (
+                    <span className="text-xs text-neutral-400 line-through">
+                      ${product.originalPrice}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-center space-x-1">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span className="text-xs font-bold text-neutral-800">{product.rating}</span>
+                  <span className="text-[11px] text-neutral-400">({product.reviewsCount})</span>
+                </div>
+              </div>
+
+              {/* Short summary */}
+              <p className="text-xs text-neutral-500 leading-relaxed">
                 {product.description}
               </p>
 
-              {/* Specifications */}
-              <div className="mt-4 pt-3 border-t border-neutral-100 space-y-1">
-                <h4 className="text-[11px] font-bold text-neutral-900 uppercase tracking-wider">
-                  Specifications
-                </h4>
-                <div className="grid grid-cols-1 gap-1 text-[11px]">
-                  {Object.entries(product.specs).map(([label, val]) => (
-                    <div key={label} className="flex justify-between py-0.5 border-b border-neutral-50">
-                      <span className="text-neutral-400 capitalize">{label}:</span>
-                      <span className="font-semibold text-neutral-800">{val}</span>
-                    </div>
-                  ))}
-                </div>
+              {/* Clean Micro-Spec Grid (No messy heavy tables!) */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                {Object.entries(product.specs).slice(0, 4).map(([key, val]) => (
+                  <div
+                    key={key}
+                    className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-150/60"
+                  >
+                    <span className="text-[10px] text-neutral-400 uppercase font-semibold block capitalize">
+                      {key}
+                    </span>
+                    <span className="text-xs font-bold text-neutral-800 truncate block mt-0.5">
+                      {val}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="pt-3 border-t border-neutral-100 space-y-3">
+            {/* Stepper & Add to Cart */}
+            <div className="pt-2 border-t border-neutral-100 space-y-3">
               <div className="flex items-center space-x-3">
                 <div className="flex items-center border border-neutral-200 rounded-xl p-0.5 bg-neutral-50">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-600 hover:bg-white hover:text-neutral-900 font-bold transition-colors cursor-pointer"
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-500 hover:bg-white hover:text-neutral-900 font-bold transition-colors cursor-pointer"
                   >
                     -
                   </button>
@@ -114,7 +109,7 @@ export default function ProductQuickViewModal({ product, isOpen, onClose, onAddT
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-600 hover:bg-white hover:text-neutral-900 font-bold transition-colors cursor-pointer"
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-neutral-500 hover:bg-white hover:text-neutral-900 font-bold transition-colors cursor-pointer"
                   >
                     +
                   </button>
@@ -145,7 +140,7 @@ export default function ProductQuickViewModal({ product, isOpen, onClose, onAddT
 
               <div className="flex items-center justify-center space-x-1.5 text-[10px] text-neutral-400">
                 <ShieldCheck className="w-3.5 h-3.5 text-neutral-500" />
-                <span>2-Year Warranty & Free Express Delivery</span>
+                <span>2-Year Warranty • Free Delivery Included</span>
               </div>
             </div>
           </div>
