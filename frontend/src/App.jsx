@@ -4,38 +4,39 @@ import ProductList from './components/ProductList';
 import CartPage from './components/CartPage';
 import CheckoutPage from './components/CheckoutPage';
 import OrderConfirmationPage from './components/OrderConfirmationPage';
-import DatabaseERDModal from './components/DatabaseERDModal';
 import ProductQuickViewModal from './components/ProductQuickViewModal';
 import Toast from './components/Toast';
 import { INITIAL_PRODUCTS } from './data/products';
 import { triggerConfetti } from './utils/confetti';
-import { Database, ShieldCheck, Heart, Sparkles, FileText } from 'lucide-react';
+import { ShoppingBag, ArrowRight } from 'lucide-react';
 
 export default function App() {
-  // Products catalog state (Required 4 products from PDF)
   const [products] = useState(INITIAL_PRODUCTS);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Cart state: persistent or initial with sample items for instant demo
-  const [cart, setCart] = useState(() => {
-    // Start with 1 Laptop and 1 Mouse for immediate visual presentation
-    return [
-      { ...INITIAL_PRODUCTS[0], quantity: 1 },
-      { ...INITIAL_PRODUCTS[1], quantity: 2 }
-    ];
-  });
+  // Initial skeleton loading simulation (700ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 700);
+    return () => clearTimeout(timer);
+  }, []);
 
-  // Navigation views: 'products' | 'cart' | 'checkout' | 'confirmation'
+  // Cart state: start with Laptop ($650) and Mouse ($15) for immediate demonstration
+  const [cart, setCart] = useState(() => [
+    { ...INITIAL_PRODUCTS[0], quantity: 1 },
+    { ...INITIAL_PRODUCTS[1], quantity: 1 }
+  ]);
+
+  // Views: 'products' | 'cart' | 'checkout' | 'confirmation'
   const [currentView, setCurrentView] = useState('products');
-
-  // Active modals
-  const [isERDOpen, setIsERDOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
-  // Promotional discount state
+  // Promo code
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState(null);
 
-  // Order state (Practical Exercise 3: Order Confirmation)
+  // Orders
   const [orderCounter, setOrderCounter] = useState(1);
   const [currentOrder, setCurrentOrder] = useState(null);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -44,26 +45,24 @@ export default function App() {
   const [recentlyAddedId, setRecentlyAddedId] = useState(null);
   const [toasts, setToasts] = useState([]);
 
-  // Toast helper
   const addToast = (message, type = 'success') => {
     const id = Date.now() + Math.random();
     setToasts(prev => [...prev, { id, message, type }]);
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id));
-    }, 3500);
+    }, 3200);
   };
 
   const dismissToast = (id) => {
     setToasts(prev => prev.filter(t => t.id !== id));
   };
 
-  // Cart calculations
+  // Calculations
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
   const cartSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const discountAmount = appliedPromo ? (cartSubtotal * appliedPromo.discountPercent) / 100 : 0;
   const cartTotal = Math.max(0, cartSubtotal - discountAmount);
 
-  // Task 2: បង្កើតប៊ូតុង Add to Cart
   const handleAddToCart = (product) => {
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
@@ -77,12 +76,11 @@ export default function App() {
     });
 
     setRecentlyAddedId(product.id);
-    setTimeout(() => setRecentlyAddedId(null), 1500);
+    setTimeout(() => setRecentlyAddedId(null), 1200);
 
-    addToast(`Added "${product.shortName || product.name}" to your shopping cart!`, 'success');
+    addToast(`Added "${product.shortName || product.name}" to cart`, 'success');
   };
 
-  // Task 3: Update QTY
   const handleUpdateQty = (productId, newQty) => {
     if (newQty <= 0) {
       handleRemoveItem(productId);
@@ -96,7 +94,6 @@ export default function App() {
     );
   };
 
-  // Task 3: remove QTY
   const handleRemoveItem = (productId) => {
     const itemToRemove = cart.find(i => i.id === productId);
     setCart(prev => prev.filter(item => item.id !== productId));
@@ -107,15 +104,13 @@ export default function App() {
 
   const handleClearCart = () => {
     setCart([]);
-    addToast('Your cart has been cleared', 'info');
+    addToast('Cart cleared', 'info');
   };
 
-  // Slide 28: Order Placement & Confirmation
   const handlePlaceOrder = ({ customer, shippingMethod, paymentMethod, totals }) => {
     setIsPlacingOrder(true);
 
     setTimeout(() => {
-      // Required format in PDF: Order ID: ORD-0001
       const orderNumberStr = String(orderCounter).padStart(4, '0');
       const orderId = `ORD-${orderNumberStr}`;
       setOrderCounter(prev => prev + 1);
@@ -125,7 +120,7 @@ export default function App() {
         customer,
         orderDate: new Date().toLocaleDateString('en-US', {
           year: 'numeric',
-          month: 'long',
+          month: 'short',
           day: 'numeric',
           hour: '2-digit',
           minute: '2-digit'
@@ -134,33 +129,31 @@ export default function App() {
         shippingMethod,
         paymentMethod,
         totals,
-        orderStatus: 'Pending' // Slide 28 / Page 4 Required: Order Status: Pending
+        orderStatus: 'Pending'
       };
 
       setCurrentOrder(placedOrder);
-      setCart([]); // Clear cart
+      setCart([]);
       setIsPlacingOrder(false);
       setCurrentView('confirmation');
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Trigger Confetti Celebration!
       triggerConfetti();
-      addToast('🎉 Order placed successfully! ID: ' + orderId, 'success');
-    }, 900);
+      addToast(`Order placed successfully: ${orderId}`, 'success');
+    }, 800);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 font-sans selection:bg-blue-600 selection:text-white">
-      {/* Sticky Modern Navbar */}
+    <div className="min-h-screen flex flex-col bg-neutral-50 text-neutral-900 font-sans selection:bg-neutral-900 selection:text-white">
+      {/* Navbar */}
       <Navbar
         currentView={currentView}
         setCurrentView={setCurrentView}
         cartCount={cartCount}
         cartTotal={cartTotal}
-        onOpenERD={() => setIsERDOpen(true)}
       />
 
-      {/* Main Content Area */}
+      {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {currentView === 'products' && (
           <ProductList
@@ -168,6 +161,7 @@ export default function App() {
             onAddToCart={handleAddToCart}
             onQuickView={(p) => setQuickViewProduct(p)}
             recentlyAddedId={recentlyAddedId}
+            isLoading={isLoading}
           />
         )}
 
@@ -210,28 +204,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Floating Database ERD Pill button for easy assignment review */}
-      <div className="fixed bottom-6 left-6 z-30">
-        <button
-          onClick={() => setIsERDOpen(true)}
-          className="flex items-center space-x-2 px-4 py-2.5 rounded-full bg-slate-900 text-white hover:bg-indigo-700 shadow-xl border border-slate-700 text-xs font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer group"
-          title="Open Database ERD (Page 4)"
-        >
-          <Database className="w-4 h-4 text-indigo-400 group-hover:text-white transition-colors" />
-          <span>Interactive ERD Diagram</span>
-          <span className="px-1.5 py-0.5 rounded text-[10px] bg-indigo-500/30 text-indigo-200">
-            Slide 29
-          </span>
-        </button>
-      </div>
-
-      {/* Interactive Database ERD Modal (PDF Page 4) */}
-      <DatabaseERDModal
-        isOpen={isERDOpen}
-        onClose={() => setIsERDOpen(false)}
-      />
-
-      {/* Product Quick View Modal */}
+      {/* Quick View Modal */}
       <ProductQuickViewModal
         product={quickViewProduct}
         isOpen={!!quickViewProduct}
@@ -239,49 +212,47 @@ export default function App() {
         onAddToCart={handleAddToCart}
       />
 
-      {/* Toast Notification Container */}
+      {/* Toast Notifications */}
       <Toast toasts={toasts} onDismiss={dismissToast} />
 
       {/* Footer */}
-      <footer className="mt-16 bg-white border-t border-slate-200/80 py-10">
+      <footer className="mt-16 bg-white border-t border-neutral-200/80 py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="text-base font-extrabold text-slate-900">TechStore E-Commerce</span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700">
-                  React + Tailwind CSS
-                </span>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center space-x-2.5">
+              <div className="w-6 h-6 rounded-lg bg-neutral-900 flex items-center justify-center text-white">
+                <ShoppingBag className="w-3.5 h-3.5" />
               </div>
-              <p className="text-xs text-slate-600 mt-1">
-                Practical Exercises 1, 2, 3 & Database Design — Fully compliant with PDF assignment specification.
-              </p>
+              <span className="text-sm font-black text-neutral-900">TechStore</span>
+              <span className="text-xs text-neutral-400">• Modern Hardware Commerce</span>
             </div>
 
-            <div className="flex items-center space-x-6 text-xs text-slate-600">
-              <button
-                onClick={() => setIsERDOpen(true)}
-                className="hover:text-indigo-600 font-semibold cursor-pointer flex items-center space-x-1"
-              >
-                <Database className="w-3.5 h-3.5" />
-                <span>Database ERD Schema</span>
-              </button>
+            <div className="flex items-center space-x-5 text-xs text-neutral-500 font-medium">
               <button
                 onClick={() => setCurrentView('products')}
-                className="hover:text-blue-600 font-semibold cursor-pointer"
+                className="hover:text-neutral-900 cursor-pointer"
               >
-                Products (4 Items)
+                Products
               </button>
               <button
                 onClick={() => setCurrentView('cart')}
-                className="hover:text-blue-600 font-semibold cursor-pointer"
+                className="hover:text-neutral-900 cursor-pointer"
               >
-                Shopping Cart
+                Cart
+              </button>
+              <button
+                onClick={() => {
+                  setIsLoading(true);
+                  setTimeout(() => setIsLoading(false), 600);
+                }}
+                className="hover:text-neutral-900 cursor-pointer text-neutral-400"
+              >
+                Reload Skeleton
               </button>
             </div>
           </div>
-          <div className="mt-8 pt-6 border-t border-slate-100 text-center text-xs text-slate-600">
-            © 2026 TechStore. Prepared for GitHub Pages deployment with GitHub Actions.
+          <div className="mt-6 pt-5 border-t border-neutral-100 text-center text-xs text-neutral-400">
+            Copyright 2026 TechStore. Clean architecture designed with React & Tailwind CSS.
           </div>
         </div>
       </footer>

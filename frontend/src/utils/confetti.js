@@ -81,3 +81,4 @@ export function triggerConfetti() {
 
   animationFrame = requestAnimationFrame(render);
 }
+
