@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 import SkeletonCard from './SkeletonCard';
+import SkeletonSlider from './SkeletonSlider';
 import HeroSlider from './HeroSlider';
 import { CATEGORIES } from '../data/products';
 import { Search, ArrowUpDown, Truck, ShieldCheck, RefreshCw, Headphones, SlidersHorizontal } from 'lucide-react';
@@ -38,8 +39,12 @@ export default function ProductList({
 
   return (
     <div className="space-y-10">
-      {/* Interactive Hero Carousel / Slider */}
-      <HeroSlider onSelectProduct={handleSliderSelect} />
+      {/* Interactive Hero Carousel / Slider or Skeleton */}
+      {isLoading ? (
+        <SkeletonSlider />
+      ) : (
+        <HeroSlider onSelectProduct={handleSliderSelect} />
+      )}
 
       {/* Trust & Guarantee Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 py-1">
